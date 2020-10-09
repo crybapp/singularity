@@ -15,12 +15,12 @@ type Controller struct {
 }
 
 //NewController creates a new API Controller at the specified route.
-func NewController(baseRoute string, context services.ServerContext, router *httprouter.Router) Controller {
+func NewController(baseRoute string, context services.ServerContext, router *httprouter.Router) *Controller {
 	if baseRoute[len(baseRoute)-1] != '/' {
 		baseRoute = baseRoute + "/"
 	}
 
-	return Controller{
+	return &Controller{
 		context:   context,
 		router:    router,
 		baseRoute: baseRoute,

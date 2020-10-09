@@ -11,20 +11,27 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+//UserController is a wrapper around Controller to prevent method contamination.
+type UserController struct {
+	*Controller
+}
+
 //RegisterUserController registers the userController and all it's routes to the router.
 func RegisterUserController(baseRoute string, context services.ServerContext, router *httprouter.Router) {
-	userController := NewController(baseRoute, context, router)
+	userController := UserController{
+		NewController(baseRoute, context, router),
+	}
 
 	userController.GET("me", userController.getSelf)
 	userController.POST("register", userController.register)
 
 }
 
-func (controller Controller) getSelf(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (userController UserController) getSelf(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.WriteHeader(200)
 }
 
-func (controller Controller) register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (userController UserController) register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println(err)
