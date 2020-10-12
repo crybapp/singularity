@@ -1,3 +1,4 @@
 config/singularity.config.json
 
 .vscode
+main/__debug_bin

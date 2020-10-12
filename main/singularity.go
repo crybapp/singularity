@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"crybapp/singularity/controllers"
+	"crybapp/singularity/models"
 	"crybapp/singularity/services"
 
 	"github.com/julienschmidt/httprouter"
@@ -47,6 +48,8 @@ func main() {
 		MongoDbClient:     mongoDbClient,
 		ApplicationConfig: applicationConfig,
 	}
+
+	models.Initialize(context.MongoDbClient)
 
 	router := httprouter.New()
 	router.GET("/", index)
