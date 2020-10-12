@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"strings"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -50,6 +51,8 @@ func (user User) InsertUser() (primitive.ObjectID, error) {
 	if FindUserByEmailAddress(user.Email) != nil {
 		return primitive.NilObjectID, &NonUniqueUser{offendingField: "Email Address"}
 	}
+
+	user.JoinedAt = time.Now().Unix()
 
 	userDocument, err := bson.Marshal(&user)
 	if err != nil {
